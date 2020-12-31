@@ -8,6 +8,7 @@ let feed, add;
 // time variables
 let min, h, t;
 let currentTime;
+let hr, hrs;
 // variables for storing values from database
 let Name;
 let lastFed;
@@ -46,6 +47,11 @@ function setup() {
   fedTime.on("value", (data) => {
     lastFed = data.val();
   });
+
+  hrs = database.ref('hour');
+  hrs.on('value', (data) => {
+    hr = data.val();
+  })
 }
 
 function draw() {
@@ -79,19 +85,19 @@ function draw() {
   currentTime = hour();
   if (currentTime > 12)
     currentTime = currentTime - 12;
-  if (currentTime == (h + 1)) {
+  if (currentTime == (hr + 1)) {
     gameState = "Playing";
     gState.update(gameState);
     food.Garden();
-  } else if (currentTime == (h + 2)) {
+  } else if (currentTime == (hr + 2)) {
     gameState = "Sleeping";
     gState.update(gameState);
     food.bedroom();
-  } else if (currentTime == (h + 3)) {
+  } else if (currentTime == (hr + 3)) {
     gameState = "Bathing";
     gState.update(gameState);
     food.washroom();
-  } else if (currentTime == (h + 4)) {
+  } else if (currentTime == (hr + 4)) {
     gameState = "hungry";
     gState.update(gameState);
   }
@@ -122,6 +128,9 @@ function time() {
   lastFed = (String)(h + ":" + min + " " + t);
   database.ref('/').update({
     Time: lastFed
+  });
+  database.ref('/').update({
+    hour: h
   });
 }
 
