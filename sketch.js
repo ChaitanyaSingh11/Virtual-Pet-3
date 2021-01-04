@@ -83,8 +83,6 @@ function draw() {
   }
 
   currentTime = hour();
-  if (currentTime > 12)
-    currentTime = currentTime - 12;
   if (currentTime == (hr + 1)) {
     gameState = "Playing";
     gState.update(gameState);
@@ -97,7 +95,7 @@ function draw() {
     gameState = "Bathing";
     gState.update(gameState);
     food.washroom();
-  } else if (currentTime == (hr + 4)) {
+  } else if (currentTime > (hr + 4)) {
     gameState = "hungry";
     gState.update(gameState);
   }
@@ -121,11 +119,9 @@ function time() {
   if (min < 10)
     min = "0" + minute();
 
-  if (h > 12) {
-    h = hour() - 12;
+  if (h > 12)
     t = "PM";
-  }
-  lastFed = (String)(h + ":" + min + " " + t);
+  lastFed = (String)(h % d + ":" + min + " " + t);
   database.ref('/').update({
     Time: lastFed
   });
