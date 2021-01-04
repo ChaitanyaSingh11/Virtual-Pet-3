@@ -121,7 +121,7 @@ function time() {
 
   if (h > 12)
     t = "PM";
-  lastFed = (String)(h % d + ":" + min + " " + t);
+  lastFed = (String)(h % 12 + ":" + min + " " + t);
   database.ref('/').update({
     Time: lastFed
   });
